@@ -1,40 +1,39 @@
-int capacidadeDeAgua(List listaRelevo) {
-  int capacidadeDeAgua = 0;
-  int relevoMaisAlto = 0;
+int checkCapacity(List<int> box) {
+  int waterCapacity = 0;
 
-  // for (int index = 0; index < listaRelevo.length;index++) {
-  //   if(relevo > relevoMaisAlto) {
-  //     relevoMaisAlto = relevo;
-  //   }
-  // }
+  int maxRelief = box.reduce((value, element) => value > element ? value : element);
+  List<int> boxCopy = [...box];
 
-  // for(int index = 0; index <= listaRelevo.length - 1; index ++) {
-  //   int atual = listaRelevo[index];
-  //   if(!(index == 0) && (index == listaRelevo.length - 1)) {
+  int index = 0;
 
-  //     int anterior = listaRelevo[index - 1];  
-  //     int seguinte = listaRelevo[index + 1];  
-  //     int profundide = (seguinte - atual) + (atual - anterior);
-  //     capacidadeDeAgua += (profundide < 0 ? 0 : profundide);
+  while (index < maxRelief) {
+    boxCopy = removerZerosDasExtremidades(boxCopy);
 
-  //   } 
-    //else if (index == listaRelevo.length - 1) {
+    List<int> zeros = boxCopy.where((elemento) => elemento == 0).toList();
+    waterCapacity += zeros.length;
 
-    //   int anterior = listaRelevo[index - 1];  
-    //   int profundide = atual - anterior;
-    //   capacidadeDeAgua += (profundide < 0 ? 0 : profundide);
+    for (int index = 0; index < boxCopy.length; index++) {
+      if(boxCopy[index] > 0) boxCopy[index] -= 1;
+    }
 
-    // } else {
+    index++;
+  }
 
-    //   int anterior = listaRelevo[index - 1];  
-    //   int seguinte = listaRelevo[index + 1];  
-    //   int profundide = (seguinte - atual) + (atual - anterior);
-    //   capacidadeDeAgua += (profundide < 0 ? 0 : profundide);
+  return waterCapacity;
+}
 
-    // }
+List<int> removerZerosDasExtremidades(List<int> lista) {
+  int inicio = 0;
+  while (inicio < lista.length && lista[inicio] == 0) {
+    inicio++;
+  }
 
+  int fim = lista.length - 1;
+  while (fim >= 0 && lista[fim] == 0) {
+    fim--;
+  }
 
-  // }
+  List<int> resultado = lista.sublist(inicio, fim + 1);
 
-  return capacidadeDeAgua;
+  return resultado;
 }
